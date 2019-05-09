@@ -1,0 +1,12 @@
+{
+  "name": "to-do-app",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://gitlab.com/jmg-side-projects/todo-list-app.git",
+  "author": "Juan Martín García <hello@juangarcia.com.ar>",
+  "license": "MIT",
+  "dependencies": {
+    "babel-preset-env": "1.5.2",
+    "babel-preset-react": "6.24.1"
+  }
+}
