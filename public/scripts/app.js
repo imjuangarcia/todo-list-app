@@ -94,16 +94,32 @@ var App = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
+    _this.addToDo = _this.addToDo.bind(_this);
     _this.removeToDos = _this.removeToDos.bind(_this);
     _this.makeDecision = _this.makeDecision.bind(_this);
 
     _this.state = {
-      toDos: ["One", "Two", "Three", "Four"]
+      toDos: []
     };
     return _this;
   }
 
   _createClass(App, [{
+    key: "addToDo",
+    value: function addToDo(toDo) {
+      if (!toDo) {
+        return "Enter a valid ToDo item";
+      } else if (this.state.toDos.indexOf(toDo) > -1) {
+        return "This ToDo already exists";
+      }
+
+      this.setState(function (previousState) {
+        return {
+          toDos: previousState.toDos.concat(toDo)
+        };
+      });
+    }
+  }, {
     key: "removeToDos",
     value: function removeToDos() {
       this.setState(function () {
@@ -132,7 +148,7 @@ var App = function (_React$Component) {
           makeDecision: this.makeDecision
         }),
         React.createElement(ToDos, { toDos: this.state.toDos }),
-        React.createElement(AddToDo, null)
+        React.createElement(AddToDo, { addToDo: this.addToDo })
       );
     }
   }]);
@@ -252,10 +268,16 @@ var ToDo = function (_React$Component5) {
 var AddToDo = function (_React$Component6) {
   _inherits(AddToDo, _React$Component6);
 
-  function AddToDo() {
+  function AddToDo(props) {
     _classCallCheck(this, AddToDo);
 
-    return _possibleConstructorReturn(this, (AddToDo.__proto__ || Object.getPrototypeOf(AddToDo)).apply(this, arguments));
+    var _this6 = _possibleConstructorReturn(this, (AddToDo.__proto__ || Object.getPrototypeOf(AddToDo)).call(this, props));
+
+    _this6.addToDo = _this6.addToDo.bind(_this6);
+    _this6.state = {
+      error: undefined
+    };
+    return _this6;
   }
 
   _createClass(AddToDo, [{
@@ -263,26 +285,34 @@ var AddToDo = function (_React$Component6) {
     value: function addToDo(e) {
       e.preventDefault();
       var toDo = e.target.elements.toDo.value.trim();
+      var error = this.props.addToDo(toDo);
 
-      if (toDo) {
-        alert("gorda");
-        // appInfo.toDos.push(toDo);
-        // localStorage.setItem("toDos", JSON.stringify(appInfo.toDos));
-        // e.target.elements.toDo.value = "";
-        // renderToDos();
-      }
+      this.setState(function () {
+        return {
+          error: error
+        };
+      });
     }
   }, {
     key: "render",
     value: function render() {
       return React.createElement(
-        "form",
-        { onSubmit: this.addToDo },
-        React.createElement("input", { type: "text", name: "toDo" }),
-        React.createElement(
-          "button",
+        React.Fragment,
+        null,
+        this.state.error && React.createElement(
+          "p",
           null,
-          "Add ToDo"
+          this.state.error
+        ),
+        React.createElement(
+          "form",
+          { onSubmit: this.addToDo },
+          React.createElement("input", { type: "text", name: "toDo" }),
+          React.createElement(
+            "button",
+            null,
+            "Add ToDo"
+          )
         )
       );
     }

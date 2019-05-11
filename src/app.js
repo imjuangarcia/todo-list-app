@@ -79,12 +79,26 @@
 class App extends React.Component {
   constructor(props) {
     super(props);
+    this.addToDo = this.addToDo.bind(this);
     this.removeToDos = this.removeToDos.bind(this);
     this.makeDecision = this.makeDecision.bind(this);
 
     this.state = {
-      toDos: ["One", "Two", "Three", "Four"]
+      toDos: []
     };
+  }
+  addToDo(toDo) {
+    if (!toDo) {
+      return "Enter a valid ToDo item";
+    } else if (this.state.toDos.indexOf(toDo) > -1) {
+      return "This ToDo already exists";
+    }
+
+    this.setState(previousState => {
+      return {
+        toDos: previousState.toDos.concat(toDo)
+      };
+    });
   }
   removeToDos() {
     this.setState(() => {
@@ -108,7 +122,7 @@ class App extends React.Component {
           makeDecision={this.makeDecision}
         />
         <ToDos toDos={this.state.toDos} />
-        <AddToDo />
+        <AddToDo addToDo={this.addToDo} />
       </main>
     );
   }
@@ -158,24 +172,33 @@ class ToDo extends React.Component {
 }
 
 class AddToDo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.addToDo = this.addToDo.bind(this);
+    this.state = {
+      error: undefined
+    };
+  }
   addToDo(e) {
     e.preventDefault();
     const toDo = e.target.elements.toDo.value.trim();
+    const error = this.props.addToDo(toDo);
 
-    if (toDo) {
-      alert("gorda");
-      // appInfo.toDos.push(toDo);
-      // localStorage.setItem("toDos", JSON.stringify(appInfo.toDos));
-      // e.target.elements.toDo.value = "";
-      // renderToDos();
-    }
+    this.setState(() => {
+      return {
+        error
+      };
+    });
   }
   render() {
     return (
-      <form onSubmit={this.addToDo}>
-        <input type="text" name="toDo" />
-        <button>Add ToDo</button>
-      </form>
+      <React.Fragment>
+        {this.state.error && <p>{this.state.error}</p>}
+        <form onSubmit={this.addToDo}>
+          <input type="text" name="toDo" />
+          <button>Add ToDo</button>
+        </form>
+      </React.Fragment>
     );
   }
 }
