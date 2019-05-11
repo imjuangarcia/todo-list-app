@@ -3,7 +3,7 @@
 var appInfo = {
   title: "To-Do App",
   subtitle: "Next Up:",
-  toDos: []
+  toDos: JSON.parse(localStorage.getItem("toDos")) || []
 };
 
 var addToDo = function addToDo(e) {
@@ -12,6 +12,7 @@ var addToDo = function addToDo(e) {
 
   if (toDo) {
     appInfo.toDos.push(toDo);
+    localStorage.setItem("toDos", JSON.stringify(appInfo.toDos));
     e.target.elements.toDo.value = "";
     renderToDos();
   }
@@ -27,7 +28,9 @@ var completeToDo = function completeToDo(e) {
   for (var i = 0; i < appInfo.toDos.length; i++) {
     if (appInfo.toDos[i] === e.target.nextSibling.innerHTML) {
       delete e.target.parentElement.remove();
-      return appInfo.toDos.splice(i, 1);
+      appInfo.toDos.splice(i, 1);
+      localStorage.setItem("toDos", JSON.stringify(appInfo.toDos));
+      return appInfo.toDos;
     }
   }
   renderToDos();
@@ -64,7 +67,7 @@ var renderToDos = function renderToDos() {
     ),
     React.createElement(
       "button",
-      { onClick: deleteToDos },
+      { disabled: appInfo.toDos.length === 0, onClick: deleteToDos },
       "Remove All ToDos"
     ),
     React.createElement(
