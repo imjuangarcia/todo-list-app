@@ -86,8 +86,36 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 // renderToDos();
 
-var Header = function (_React$Component) {
-  _inherits(Header, _React$Component);
+var App = function (_React$Component) {
+  _inherits(App, _React$Component);
+
+  function App() {
+    _classCallCheck(this, App);
+
+    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+  }
+
+  _createClass(App, [{
+    key: "render",
+    value: function render() {
+      var toDos = ["One", "Two", "Three", "Four"];
+
+      return React.createElement(
+        "main",
+        null,
+        React.createElement(Header, { title: "To-Do App" }),
+        React.createElement(Actions, null),
+        React.createElement(ToDos, { toDos: toDos }),
+        React.createElement(AddToDo, null)
+      );
+    }
+  }]);
+
+  return App;
+}(React.Component);
+
+var Header = function (_React$Component2) {
+  _inherits(Header, _React$Component2);
 
   function Header() {
     _classCallCheck(this, Header);
@@ -104,12 +132,7 @@ var Header = function (_React$Component) {
         React.createElement(
           "h1",
           null,
-          "To-Do App"
-        ),
-        React.createElement(
-          "h2",
-          null,
-          "Subtitle"
+          this.props.title
         )
       );
     }
@@ -118,8 +141,8 @@ var Header = function (_React$Component) {
   return Header;
 }(React.Component);
 
-var Actions = function (_React$Component2) {
-  _inherits(Actions, _React$Component2);
+var Actions = function (_React$Component3) {
+  _inherits(Actions, _React$Component3);
 
   function Actions() {
     _classCallCheck(this, Actions);
@@ -141,8 +164,8 @@ var Actions = function (_React$Component2) {
   return Actions;
 }(React.Component);
 
-var ToDos = function (_React$Component3) {
-  _inherits(ToDos, _React$Component3);
+var ToDos = function (_React$Component4) {
+  _inherits(ToDos, _React$Component4);
 
   function ToDos() {
     _classCallCheck(this, ToDos);
@@ -153,19 +176,40 @@ var ToDos = function (_React$Component3) {
   _createClass(ToDos, [{
     key: "render",
     value: function render() {
-      return React.createElement(
-        "p",
-        null,
-        "Test ToDos"
-      );
+      return this.props.toDos.map(function (toDo) {
+        return React.createElement(ToDo, { key: toDo, toDoText: toDo });
+      });
     }
   }]);
 
   return ToDos;
 }(React.Component);
 
-var AddToDo = function (_React$Component4) {
-  _inherits(AddToDo, _React$Component4);
+var ToDo = function (_React$Component5) {
+  _inherits(ToDo, _React$Component5);
+
+  function ToDo() {
+    _classCallCheck(this, ToDo);
+
+    return _possibleConstructorReturn(this, (ToDo.__proto__ || Object.getPrototypeOf(ToDo)).apply(this, arguments));
+  }
+
+  _createClass(ToDo, [{
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        "p",
+        null,
+        this.props.toDoText
+      );
+    }
+  }]);
+
+  return ToDo;
+}(React.Component);
+
+var AddToDo = function (_React$Component6) {
+  _inherits(AddToDo, _React$Component6);
 
   function AddToDo() {
     _classCallCheck(this, AddToDo);
@@ -187,13 +231,4 @@ var AddToDo = function (_React$Component4) {
   return AddToDo;
 }(React.Component);
 
-var jsx = React.createElement(
-  "section",
-  { className: "main" },
-  React.createElement(Header, null),
-  React.createElement(Actions, null),
-  React.createElement(ToDos, null),
-  React.createElement(AddToDo, null)
-);
-
-ReactDOM.render(jsx, document.querySelector("#app"));
+ReactDOM.render(React.createElement(App, null), document.querySelector("#app"));

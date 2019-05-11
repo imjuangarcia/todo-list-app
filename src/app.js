@@ -76,12 +76,26 @@
 
 // renderToDos();
 
+class App extends React.Component {
+  render() {
+    const toDos = ["One", "Two", "Three", "Four"];
+
+    return (
+      <main>
+        <Header title="To-Do App" />
+        <Actions />
+        <ToDos toDos={toDos} />
+        <AddToDo />
+      </main>
+    );
+  }
+}
+
 class Header extends React.Component {
   render() {
     return (
       <section className="title">
-        <h1>To-Do App</h1>
-        <h2>Subtitle</h2>
+        <h1>{this.props.title}</h1>
       </section>
     );
   }
@@ -95,7 +109,13 @@ class Actions extends React.Component {
 
 class ToDos extends React.Component {
   render() {
-    return <p>Test ToDos</p>;
+    return this.props.toDos.map(toDo => <ToDo key={toDo} toDoText={toDo} />);
+  }
+}
+
+class ToDo extends React.Component {
+  render() {
+    return <p>{this.props.toDoText}</p>;
   }
 }
 
@@ -105,13 +125,4 @@ class AddToDo extends React.Component {
   }
 }
 
-const jsx = (
-  <section className="main">
-    <Header />
-    <Actions />
-    <ToDos />
-    <AddToDo />
-  </section>
-);
-
-ReactDOM.render(jsx, document.querySelector("#app"));
+ReactDOM.render(<App />, document.querySelector("#app"));
