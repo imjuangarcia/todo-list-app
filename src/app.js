@@ -77,14 +77,37 @@
 // renderToDos();
 
 class App extends React.Component {
-  render() {
-    const toDos = ["One", "Two", "Three", "Four"];
+  constructor(props) {
+    super(props);
+    this.removeToDos = this.removeToDos.bind(this);
+    this.makeDecision = this.makeDecision.bind(this);
 
+    this.state = {
+      toDos: ["One", "Two", "Three", "Four"]
+    };
+  }
+  removeToDos() {
+    this.setState(() => {
+      return {
+        toDos: []
+      };
+    });
+  }
+  makeDecision() {
+    const randomNumber = Math.floor(Math.random() * this.state.toDos.length);
+    const option = this.state.toDos[randomNumber];
+    alert(option);
+  }
+  render() {
     return (
       <main>
         <Header title="To-Do App" />
-        <Actions />
-        <ToDos toDos={toDos} />
+        <Actions
+          hasToDos={this.state.toDos.length > 0}
+          removeToDos={this.removeToDos}
+          makeDecision={this.makeDecision}
+        />
+        <ToDos toDos={this.state.toDos} />
         <AddToDo />
       </main>
     );
@@ -103,7 +126,22 @@ class Header extends React.Component {
 
 class Actions extends React.Component {
   render() {
-    return <button>What should I do?</button>;
+    return (
+      <React.Fragment>
+        <button
+          disabled={!this.props.hasToDos}
+          onClick={this.props.removeToDos}
+        >
+          Remove ToDos
+        </button>
+        <button
+          disabled={!this.props.hasToDos}
+          onClick={this.props.makeDecision}
+        >
+          What should I do?
+        </button>
+      </React.Fragment>
+    );
   }
 }
 
@@ -120,8 +158,25 @@ class ToDo extends React.Component {
 }
 
 class AddToDo extends React.Component {
+  addToDo(e) {
+    e.preventDefault();
+    const toDo = e.target.elements.toDo.value.trim();
+
+    if (toDo) {
+      alert("gorda");
+      // appInfo.toDos.push(toDo);
+      // localStorage.setItem("toDos", JSON.stringify(appInfo.toDos));
+      // e.target.elements.toDo.value = "";
+      // renderToDos();
+    }
+  }
   render() {
-    return <p>Add ToDo</p>;
+    return (
+      <form onSubmit={this.addToDo}>
+        <input type="text" name="toDo" />
+        <button>Add ToDo</button>
+      </form>
+    );
   }
 }
 

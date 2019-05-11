@@ -89,23 +89,49 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var App = function (_React$Component) {
   _inherits(App, _React$Component);
 
-  function App() {
+  function App(props) {
     _classCallCheck(this, App);
 
-    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+    _this.removeToDos = _this.removeToDos.bind(_this);
+    _this.makeDecision = _this.makeDecision.bind(_this);
+
+    _this.state = {
+      toDos: ["One", "Two", "Three", "Four"]
+    };
+    return _this;
   }
 
   _createClass(App, [{
+    key: "removeToDos",
+    value: function removeToDos() {
+      this.setState(function () {
+        return {
+          toDos: []
+        };
+      });
+    }
+  }, {
+    key: "makeDecision",
+    value: function makeDecision() {
+      var randomNumber = Math.floor(Math.random() * this.state.toDos.length);
+      var option = this.state.toDos[randomNumber];
+      alert(option);
+    }
+  }, {
     key: "render",
     value: function render() {
-      var toDos = ["One", "Two", "Three", "Four"];
-
       return React.createElement(
         "main",
         null,
         React.createElement(Header, { title: "To-Do App" }),
-        React.createElement(Actions, null),
-        React.createElement(ToDos, { toDos: toDos }),
+        React.createElement(Actions, {
+          hasToDos: this.state.toDos.length > 0,
+          removeToDos: this.removeToDos,
+          makeDecision: this.makeDecision
+        }),
+        React.createElement(ToDos, { toDos: this.state.toDos }),
         React.createElement(AddToDo, null)
       );
     }
@@ -154,9 +180,24 @@ var Actions = function (_React$Component3) {
     key: "render",
     value: function render() {
       return React.createElement(
-        "button",
+        React.Fragment,
         null,
-        "What should I do?"
+        React.createElement(
+          "button",
+          {
+            disabled: !this.props.hasToDos,
+            onClick: this.props.removeToDos
+          },
+          "Remove ToDos"
+        ),
+        React.createElement(
+          "button",
+          {
+            disabled: !this.props.hasToDos,
+            onClick: this.props.makeDecision
+          },
+          "What should I do?"
+        )
       );
     }
   }]);
@@ -218,12 +259,31 @@ var AddToDo = function (_React$Component6) {
   }
 
   _createClass(AddToDo, [{
+    key: "addToDo",
+    value: function addToDo(e) {
+      e.preventDefault();
+      var toDo = e.target.elements.toDo.value.trim();
+
+      if (toDo) {
+        alert("gorda");
+        // appInfo.toDos.push(toDo);
+        // localStorage.setItem("toDos", JSON.stringify(appInfo.toDos));
+        // e.target.elements.toDo.value = "";
+        // renderToDos();
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       return React.createElement(
-        "p",
-        null,
-        "Add ToDo"
+        "form",
+        { onSubmit: this.addToDo },
+        React.createElement("input", { type: "text", name: "toDo" }),
+        React.createElement(
+          "button",
+          null,
+          "Add ToDo"
+        )
       );
     }
   }]);
