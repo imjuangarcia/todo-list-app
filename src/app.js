@@ -25,10 +25,8 @@ const makeDecision = () => {
 const completeToDo = e => {
   for (let i = 0; i < appInfo.toDos.length; i++) {
     if (appInfo.toDos[i] === e.target.nextSibling.innerHTML) {
-      delete e.target.parentElement.remove();
       appInfo.toDos.splice(i, 1);
       localStorage.setItem("toDos", JSON.stringify(appInfo.toDos));
-      return appInfo.toDos;
     }
   }
   renderToDos();
