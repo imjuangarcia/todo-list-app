@@ -1,81 +1,3 @@
-// const appInfo = {
-//   title: "To-Do App",
-//   subtitle: "Next Up:",
-//   toDos: JSON.parse(localStorage.getItem("toDos")) || []
-// };
-
-// const addToDo = e => {
-//   e.preventDefault();
-//   const toDo = e.target.elements.toDo.value;
-
-//   if (toDo) {
-//     appInfo.toDos.push(toDo);
-//     localStorage.setItem("toDos", JSON.stringify(appInfo.toDos));
-//     e.target.elements.toDo.value = "";
-//     renderToDos();
-//   }
-// };
-
-// const makeDecision = () => {
-//   const randomNumber = Math.floor(Math.random() * appInfo.toDos.length);
-//   const option = appInfo.toDos[randomNumber];
-//   alert(option);
-// };
-
-// const completeToDo = e => {
-//   for (let i = 0; i < appInfo.toDos.length; i++) {
-//     if (appInfo.toDos[i] === e.target.nextSibling.innerHTML) {
-//       appInfo.toDos.splice(i, 1);
-//       localStorage.setItem("toDos", JSON.stringify(appInfo.toDos));
-//     }
-//   }
-//   renderToDos();
-// };
-
-// const deleteToDos = () => {
-//   appInfo.toDos = [];
-//   renderToDos();
-// };
-
-// const renderToDos = () => {
-//   const template = (
-//     <section className="title">
-//       <h1>{appInfo.title}</h1>
-//       {appInfo.subtitle && <p>{appInfo.subtitle}</p>}
-//       <p>
-//         {appInfo.toDos.length > 0
-//           ? "Tasks for today:"
-//           : "No Tasks for today. Go get some sun! ☀️"}
-//       </p>
-//       <button disabled={appInfo.toDos.length === 0} onClick={makeDecision}>
-//         What should I do?
-//       </button>
-//       <button disabled={appInfo.toDos.length === 0} onClick={deleteToDos}>
-//         Remove All ToDos
-//       </button>
-//       <ol>
-//         {appInfo.toDos.map(toDo => {
-//           return (
-//             <li key={toDo}>
-//               <input type="checkbox" onClick={completeToDo} />
-//               <span>{toDo}</span>
-//             </li>
-//           );
-//         })}
-//       </ol>
-//       <form onSubmit={addToDo}>
-//         <input type="text" name="toDo" />
-//         <button>Add ToDo</button>
-//       </form>
-//     </section>
-//   );
-//   ReactDOM.render(template, appRoot);
-// };
-
-// const appRoot = document.querySelector("#app");
-
-// renderToDos();
-
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -84,9 +6,10 @@ class App extends React.Component {
     this.makeDecision = this.makeDecision.bind(this);
 
     this.state = {
-      toDos: []
+      toDos: JSON.parse(localStorage.getItem("toDos")) || []
     };
   }
+
   addToDo(toDo) {
     if (!toDo) {
       return "Enter a valid ToDo item";
@@ -95,6 +18,10 @@ class App extends React.Component {
     }
 
     this.setState(previousState => {
+      localStorage.setItem(
+        "toDos",
+        JSON.stringify(previousState.toDos.concat(toDo))
+      );
       return {
         toDos: previousState.toDos.concat(toDo)
       };
@@ -114,16 +41,16 @@ class App extends React.Component {
   }
   render() {
     return (
-      <main>
-        <Header title="To-Do App" />
+      <React.Fragment>
+        <Header title="To-Do App" toDos={this.state.toDos} />
+        <ToDos toDos={this.state.toDos} />
+        <AddToDo addToDo={this.addToDo} />
         <Actions
           hasToDos={this.state.toDos.length > 0}
           removeToDos={this.removeToDos}
           makeDecision={this.makeDecision}
         />
-        <ToDos toDos={this.state.toDos} />
-        <AddToDo addToDo={this.addToDo} />
-      </main>
+      </React.Fragment>
     );
   }
 }
@@ -133,6 +60,11 @@ class Header extends React.Component {
     return (
       <section className="title">
         <h1>{this.props.title}</h1>
+        <p>
+          {this.props.toDos.length > 0
+            ? "Tasks for today:"
+            : "No Tasks for today. Go get some sun! ☀️"}
+        </p>
       </section>
     );
   }
@@ -141,7 +73,7 @@ class Header extends React.Component {
 class Actions extends React.Component {
   render() {
     return (
-      <React.Fragment>
+      <section className="buttons">
         <button
           disabled={!this.props.hasToDos}
           onClick={this.props.removeToDos}
@@ -154,20 +86,48 @@ class Actions extends React.Component {
         >
           What should I do?
         </button>
-      </React.Fragment>
+      </section>
     );
   }
 }
 
 class ToDos extends React.Component {
+  constructor(props) {
+    super(props);
+    this.completeToDo = this.completeToDo.bind(this);
+  }
+  completeToDo(e) {
+    for (let i = 0; i < this.props.toDos.length; i++) {
+      if (this.props.toDos[i] === e.target.nextSibling.innerHTML) {
+        this.props.toDos.splice(i, 1);
+        this.setState(() => {
+          localStorage.setItem("toDos", JSON.stringify(this.props.toDos));
+          return {
+            toDos: this.props.toDos
+          };
+        });
+      }
+    }
+  }
   render() {
-    return this.props.toDos.map(toDo => <ToDo key={toDo} toDoText={toDo} />);
+    return (
+      <ul>
+        {this.props.toDos.map(toDo => (
+          <ToDo key={toDo} toDoText={toDo} completeToDo={this.completeToDo} />
+        ))}
+      </ul>
+    );
   }
 }
 
 class ToDo extends React.Component {
   render() {
-    return <p>{this.props.toDoText}</p>;
+    return (
+      <li>
+        <input type="checkbox" onClick={this.props.completeToDo} />
+        <span>{this.props.toDoText}</span>
+      </li>
+    );
   }
 }
 
@@ -183,6 +143,7 @@ class AddToDo extends React.Component {
     e.preventDefault();
     const toDo = e.target.elements.toDo.value.trim();
     const error = this.props.addToDo(toDo);
+    e.target.elements.toDo.value = "";
 
     this.setState(() => {
       return {

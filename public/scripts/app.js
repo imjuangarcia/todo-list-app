@@ -8,84 +8,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// const appInfo = {
-//   title: "To-Do App",
-//   subtitle: "Next Up:",
-//   toDos: JSON.parse(localStorage.getItem("toDos")) || []
-// };
-
-// const addToDo = e => {
-//   e.preventDefault();
-//   const toDo = e.target.elements.toDo.value;
-
-//   if (toDo) {
-//     appInfo.toDos.push(toDo);
-//     localStorage.setItem("toDos", JSON.stringify(appInfo.toDos));
-//     e.target.elements.toDo.value = "";
-//     renderToDos();
-//   }
-// };
-
-// const makeDecision = () => {
-//   const randomNumber = Math.floor(Math.random() * appInfo.toDos.length);
-//   const option = appInfo.toDos[randomNumber];
-//   alert(option);
-// };
-
-// const completeToDo = e => {
-//   for (let i = 0; i < appInfo.toDos.length; i++) {
-//     if (appInfo.toDos[i] === e.target.nextSibling.innerHTML) {
-//       appInfo.toDos.splice(i, 1);
-//       localStorage.setItem("toDos", JSON.stringify(appInfo.toDos));
-//     }
-//   }
-//   renderToDos();
-// };
-
-// const deleteToDos = () => {
-//   appInfo.toDos = [];
-//   renderToDos();
-// };
-
-// const renderToDos = () => {
-//   const template = (
-//     <section className="title">
-//       <h1>{appInfo.title}</h1>
-//       {appInfo.subtitle && <p>{appInfo.subtitle}</p>}
-//       <p>
-//         {appInfo.toDos.length > 0
-//           ? "Tasks for today:"
-//           : "No Tasks for today. Go get some sun! ☀️"}
-//       </p>
-//       <button disabled={appInfo.toDos.length === 0} onClick={makeDecision}>
-//         What should I do?
-//       </button>
-//       <button disabled={appInfo.toDos.length === 0} onClick={deleteToDos}>
-//         Remove All ToDos
-//       </button>
-//       <ol>
-//         {appInfo.toDos.map(toDo => {
-//           return (
-//             <li key={toDo}>
-//               <input type="checkbox" onClick={completeToDo} />
-//               <span>{toDo}</span>
-//             </li>
-//           );
-//         })}
-//       </ol>
-//       <form onSubmit={addToDo}>
-//         <input type="text" name="toDo" />
-//         <button>Add ToDo</button>
-//       </form>
-//     </section>
-//   );
-//   ReactDOM.render(template, appRoot);
-// };
-
-// const appRoot = document.querySelector("#app");
-
-// renderToDos();
-
 var App = function (_React$Component) {
   _inherits(App, _React$Component);
 
@@ -99,7 +21,7 @@ var App = function (_React$Component) {
     _this.makeDecision = _this.makeDecision.bind(_this);
 
     _this.state = {
-      toDos: []
+      toDos: JSON.parse(localStorage.getItem("toDos")) || []
     };
     return _this;
   }
@@ -114,6 +36,7 @@ var App = function (_React$Component) {
       }
 
       this.setState(function (previousState) {
+        localStorage.setItem("toDos", JSON.stringify(previousState.toDos.concat(toDo)));
         return {
           toDos: previousState.toDos.concat(toDo)
         };
@@ -139,16 +62,16 @@ var App = function (_React$Component) {
     key: "render",
     value: function render() {
       return React.createElement(
-        "main",
+        React.Fragment,
         null,
-        React.createElement(Header, { title: "To-Do App" }),
+        React.createElement(Header, { title: "To-Do App", toDos: this.state.toDos }),
+        React.createElement(ToDos, { toDos: this.state.toDos }),
+        React.createElement(AddToDo, { addToDo: this.addToDo }),
         React.createElement(Actions, {
           hasToDos: this.state.toDos.length > 0,
           removeToDos: this.removeToDos,
           makeDecision: this.makeDecision
-        }),
-        React.createElement(ToDos, { toDos: this.state.toDos }),
-        React.createElement(AddToDo, { addToDo: this.addToDo })
+        })
       );
     }
   }]);
@@ -175,6 +98,11 @@ var Header = function (_React$Component2) {
           "h1",
           null,
           this.props.title
+        ),
+        React.createElement(
+          "p",
+          null,
+          this.props.toDos.length > 0 ? "Tasks for today:" : "No Tasks for today. Go get some sun! ☀️"
         )
       );
     }
@@ -196,8 +124,8 @@ var Actions = function (_React$Component3) {
     key: "render",
     value: function render() {
       return React.createElement(
-        React.Fragment,
-        null,
+        "section",
+        { className: "buttons" },
         React.createElement(
           "button",
           {
@@ -224,18 +152,44 @@ var Actions = function (_React$Component3) {
 var ToDos = function (_React$Component4) {
   _inherits(ToDos, _React$Component4);
 
-  function ToDos() {
+  function ToDos(props) {
     _classCallCheck(this, ToDos);
 
-    return _possibleConstructorReturn(this, (ToDos.__proto__ || Object.getPrototypeOf(ToDos)).apply(this, arguments));
+    var _this4 = _possibleConstructorReturn(this, (ToDos.__proto__ || Object.getPrototypeOf(ToDos)).call(this, props));
+
+    _this4.completeToDo = _this4.completeToDo.bind(_this4);
+    return _this4;
   }
 
   _createClass(ToDos, [{
+    key: "completeToDo",
+    value: function completeToDo(e) {
+      var _this5 = this;
+
+      for (var i = 0; i < this.props.toDos.length; i++) {
+        if (this.props.toDos[i] === e.target.nextSibling.innerHTML) {
+          this.props.toDos.splice(i, 1);
+          this.setState(function () {
+            localStorage.setItem("toDos", JSON.stringify(_this5.props.toDos));
+            return {
+              toDos: _this5.props.toDos
+            };
+          });
+        }
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
-      return this.props.toDos.map(function (toDo) {
-        return React.createElement(ToDo, { key: toDo, toDoText: toDo });
-      });
+      var _this6 = this;
+
+      return React.createElement(
+        "ul",
+        null,
+        this.props.toDos.map(function (toDo) {
+          return React.createElement(ToDo, { key: toDo, toDoText: toDo, completeToDo: _this6.completeToDo });
+        })
+      );
     }
   }]);
 
@@ -255,9 +209,14 @@ var ToDo = function (_React$Component5) {
     key: "render",
     value: function render() {
       return React.createElement(
-        "p",
+        "li",
         null,
-        this.props.toDoText
+        React.createElement("input", { type: "checkbox", onClick: this.props.completeToDo }),
+        React.createElement(
+          "span",
+          null,
+          this.props.toDoText
+        )
       );
     }
   }]);
@@ -271,13 +230,13 @@ var AddToDo = function (_React$Component6) {
   function AddToDo(props) {
     _classCallCheck(this, AddToDo);
 
-    var _this6 = _possibleConstructorReturn(this, (AddToDo.__proto__ || Object.getPrototypeOf(AddToDo)).call(this, props));
+    var _this8 = _possibleConstructorReturn(this, (AddToDo.__proto__ || Object.getPrototypeOf(AddToDo)).call(this, props));
 
-    _this6.addToDo = _this6.addToDo.bind(_this6);
-    _this6.state = {
+    _this8.addToDo = _this8.addToDo.bind(_this8);
+    _this8.state = {
       error: undefined
     };
-    return _this6;
+    return _this8;
   }
 
   _createClass(AddToDo, [{
@@ -286,6 +245,7 @@ var AddToDo = function (_React$Component6) {
       e.preventDefault();
       var toDo = e.target.elements.toDo.value.trim();
       var error = this.props.addToDo(toDo);
+      e.target.elements.toDo.value = "";
 
       this.setState(function () {
         return {
