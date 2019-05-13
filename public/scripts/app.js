@@ -46,6 +46,7 @@ var App = function (_React$Component) {
     key: "removeToDos",
     value: function removeToDos() {
       this.setState(function () {
+        localStorage.removeItem("toDos", "");
         return {
           toDos: []
         };
@@ -79,100 +80,64 @@ var App = function (_React$Component) {
   return App;
 }(React.Component);
 
-var Header = function (_React$Component2) {
-  _inherits(Header, _React$Component2);
+var Header = function Header(props) {
+  return React.createElement(
+    "section",
+    { className: "title" },
+    React.createElement(
+      "h1",
+      null,
+      props.title
+    ),
+    React.createElement(
+      "p",
+      null,
+      props.toDos.length > 0 ? "Tasks for today:" : "No Tasks for today. Go get some sun! ☀️"
+    )
+  );
+};
 
-  function Header() {
-    _classCallCheck(this, Header);
+var Actions = function Actions(props) {
+  return React.createElement(
+    "section",
+    { className: "buttons" },
+    React.createElement(
+      "button",
+      { disabled: !props.hasToDos, onClick: props.removeToDos },
+      "Remove ToDos"
+    ),
+    React.createElement(
+      "button",
+      { disabled: !props.hasToDos, onClick: props.makeDecision },
+      "What should I do?"
+    )
+  );
+};
 
-    return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
-  }
-
-  _createClass(Header, [{
-    key: "render",
-    value: function render() {
-      return React.createElement(
-        "section",
-        { className: "title" },
-        React.createElement(
-          "h1",
-          null,
-          this.props.title
-        ),
-        React.createElement(
-          "p",
-          null,
-          this.props.toDos.length > 0 ? "Tasks for today:" : "No Tasks for today. Go get some sun! ☀️"
-        )
-      );
-    }
-  }]);
-
-  return Header;
-}(React.Component);
-
-var Actions = function (_React$Component3) {
-  _inherits(Actions, _React$Component3);
-
-  function Actions() {
-    _classCallCheck(this, Actions);
-
-    return _possibleConstructorReturn(this, (Actions.__proto__ || Object.getPrototypeOf(Actions)).apply(this, arguments));
-  }
-
-  _createClass(Actions, [{
-    key: "render",
-    value: function render() {
-      return React.createElement(
-        "section",
-        { className: "buttons" },
-        React.createElement(
-          "button",
-          {
-            disabled: !this.props.hasToDos,
-            onClick: this.props.removeToDos
-          },
-          "Remove ToDos"
-        ),
-        React.createElement(
-          "button",
-          {
-            disabled: !this.props.hasToDos,
-            onClick: this.props.makeDecision
-          },
-          "What should I do?"
-        )
-      );
-    }
-  }]);
-
-  return Actions;
-}(React.Component);
-
-var ToDos = function (_React$Component4) {
-  _inherits(ToDos, _React$Component4);
+var ToDos = function (_React$Component2) {
+  _inherits(ToDos, _React$Component2);
 
   function ToDos(props) {
     _classCallCheck(this, ToDos);
 
-    var _this4 = _possibleConstructorReturn(this, (ToDos.__proto__ || Object.getPrototypeOf(ToDos)).call(this, props));
+    var _this2 = _possibleConstructorReturn(this, (ToDos.__proto__ || Object.getPrototypeOf(ToDos)).call(this, props));
 
-    _this4.completeToDo = _this4.completeToDo.bind(_this4);
-    return _this4;
+    _this2.completeToDo = _this2.completeToDo.bind(_this2);
+    return _this2;
   }
 
   _createClass(ToDos, [{
     key: "completeToDo",
     value: function completeToDo(e) {
-      var _this5 = this;
+      var _this3 = this;
 
       for (var i = 0; i < this.props.toDos.length; i++) {
         if (this.props.toDos[i] === e.target.nextSibling.innerHTML) {
           this.props.toDos.splice(i, 1);
           this.setState(function () {
-            localStorage.setItem("toDos", JSON.stringify(_this5.props.toDos));
+            localStorage.setItem("toDos", JSON.stringify(_this3.props.toDos));
             return {
-              toDos: _this5.props.toDos
+              toDos: _this3.props.toDos
             };
           });
         }
@@ -181,13 +146,13 @@ var ToDos = function (_React$Component4) {
   }, {
     key: "render",
     value: function render() {
-      var _this6 = this;
+      var _this4 = this;
 
       return React.createElement(
         "ul",
         null,
         this.props.toDos.map(function (toDo) {
-          return React.createElement(ToDo, { key: toDo, toDoText: toDo, completeToDo: _this6.completeToDo });
+          return React.createElement(ToDo, { key: toDo, toDoText: toDo, completeToDo: _this4.completeToDo });
         })
       );
     }
@@ -196,8 +161,8 @@ var ToDos = function (_React$Component4) {
   return ToDos;
 }(React.Component);
 
-var ToDo = function (_React$Component5) {
-  _inherits(ToDo, _React$Component5);
+var ToDo = function (_React$Component3) {
+  _inherits(ToDo, _React$Component3);
 
   function ToDo() {
     _classCallCheck(this, ToDo);
@@ -224,19 +189,19 @@ var ToDo = function (_React$Component5) {
   return ToDo;
 }(React.Component);
 
-var AddToDo = function (_React$Component6) {
-  _inherits(AddToDo, _React$Component6);
+var AddToDo = function (_React$Component4) {
+  _inherits(AddToDo, _React$Component4);
 
   function AddToDo(props) {
     _classCallCheck(this, AddToDo);
 
-    var _this8 = _possibleConstructorReturn(this, (AddToDo.__proto__ || Object.getPrototypeOf(AddToDo)).call(this, props));
+    var _this6 = _possibleConstructorReturn(this, (AddToDo.__proto__ || Object.getPrototypeOf(AddToDo)).call(this, props));
 
-    _this8.addToDo = _this8.addToDo.bind(_this8);
-    _this8.state = {
+    _this6.addToDo = _this6.addToDo.bind(_this6);
+    _this6.state = {
       error: undefined
     };
-    return _this8;
+    return _this6;
   }
 
   _createClass(AddToDo, [{

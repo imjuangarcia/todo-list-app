@@ -29,6 +29,7 @@ class App extends React.Component {
   }
   removeToDos() {
     this.setState(() => {
+      localStorage.removeItem("toDos", "");
       return {
         toDos: []
       };
@@ -55,41 +56,31 @@ class App extends React.Component {
   }
 }
 
-class Header extends React.Component {
-  render() {
-    return (
-      <section className="title">
-        <h1>{this.props.title}</h1>
-        <p>
-          {this.props.toDos.length > 0
-            ? "Tasks for today:"
-            : "No Tasks for today. Go get some sun! ☀️"}
-        </p>
-      </section>
-    );
-  }
-}
+const Header = props => {
+  return (
+    <section className="title">
+      <h1>{props.title}</h1>
+      <p>
+        {props.toDos.length > 0
+          ? "Tasks for today:"
+          : "No Tasks for today. Go get some sun! ☀️"}
+      </p>
+    </section>
+  );
+};
 
-class Actions extends React.Component {
-  render() {
-    return (
-      <section className="buttons">
-        <button
-          disabled={!this.props.hasToDos}
-          onClick={this.props.removeToDos}
-        >
-          Remove ToDos
-        </button>
-        <button
-          disabled={!this.props.hasToDos}
-          onClick={this.props.makeDecision}
-        >
-          What should I do?
-        </button>
-      </section>
-    );
-  }
-}
+const Actions = props => {
+  return (
+    <section className="buttons">
+      <button disabled={!props.hasToDos} onClick={props.removeToDos}>
+        Remove ToDos
+      </button>
+      <button disabled={!props.hasToDos} onClick={props.makeDecision}>
+        What should I do?
+      </button>
+    </section>
+  );
+};
 
 class ToDos extends React.Component {
   constructor(props) {
