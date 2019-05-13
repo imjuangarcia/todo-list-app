@@ -65,7 +65,7 @@ var App = function (_React$Component) {
       return React.createElement(
         React.Fragment,
         null,
-        React.createElement(Header, { title: "To-Do App", toDos: this.state.toDos }),
+        React.createElement(Header, { toDos: this.state.toDos }),
         React.createElement(ToDos, { toDos: this.state.toDos }),
         React.createElement(AddToDo, { addToDo: this.addToDo }),
         React.createElement(Actions, {
@@ -95,6 +95,10 @@ var Header = function Header(props) {
       props.toDos.length > 0 ? "Tasks for today:" : "No Tasks for today. Go get some sun! ☀️"
     )
   );
+};
+
+Header.defaultProps = {
+  title: "To-Do App"
 };
 
 var Actions = function Actions(props) {

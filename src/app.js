@@ -43,7 +43,7 @@ class App extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Header title="To-Do App" toDos={this.state.toDos} />
+        <Header toDos={this.state.toDos} />
         <ToDos toDos={this.state.toDos} />
         <AddToDo addToDo={this.addToDo} />
         <Actions
@@ -67,6 +67,10 @@ const Header = props => {
       </p>
     </section>
   );
+};
+
+Header.defaultProps = {
+  title: "To-Do App"
 };
 
 const Actions = props => {
