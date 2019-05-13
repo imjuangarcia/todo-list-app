@@ -4,10 +4,17 @@ class App extends React.Component {
     this.addToDo = this.addToDo.bind(this);
     this.removeToDos = this.removeToDos.bind(this);
     this.makeDecision = this.makeDecision.bind(this);
+    this.completeToDo = this.completeToDo.bind(this);
 
     this.state = {
       toDos: JSON.parse(localStorage.getItem("toDos")) || []
     };
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.toDos.length !== this.state.toDos.length) {
+      localStorage.setItem("toDos", JSON.stringify(this.state.toDos));
+    }
   }
 
   addToDo(toDo) {
@@ -18,10 +25,6 @@ class App extends React.Component {
     }
 
     this.setState(previousState => {
-      localStorage.setItem(
-        "toDos",
-        JSON.stringify(previousState.toDos.concat(toDo))
-      );
       return {
         toDos: previousState.toDos.concat(toDo)
       };
@@ -35,6 +38,15 @@ class App extends React.Component {
       };
     });
   }
+  completeToDo(toDoToRemove) {
+    this.setState(prevState => {
+      return {
+        toDos: prevState.toDos.filter(toDo => {
+          return toDoToRemove !== toDo;
+        })
+      };
+    });
+  }
   makeDecision() {
     const randomNumber = Math.floor(Math.random() * this.state.toDos.length);
     const option = this.state.toDos[randomNumber];
@@ -44,7 +56,7 @@ class App extends React.Component {
     return (
       <React.Fragment>
         <Header toDos={this.state.toDos} />
-        <ToDos toDos={this.state.toDos} />
+        <ToDos toDos={this.state.toDos} completeToDo={this.completeToDo} />
         <AddToDo addToDo={this.addToDo} />
         <Actions
           hasToDos={this.state.toDos.length > 0}
@@ -87,28 +99,15 @@ const Actions = props => {
 };
 
 class ToDos extends React.Component {
-  constructor(props) {
-    super(props);
-    this.completeToDo = this.completeToDo.bind(this);
-  }
-  completeToDo(e) {
-    for (let i = 0; i < this.props.toDos.length; i++) {
-      if (this.props.toDos[i] === e.target.nextSibling.innerHTML) {
-        this.props.toDos.splice(i, 1);
-        this.setState(() => {
-          localStorage.setItem("toDos", JSON.stringify(this.props.toDos));
-          return {
-            toDos: this.props.toDos
-          };
-        });
-      }
-    }
-  }
   render() {
     return (
       <ul>
         {this.props.toDos.map(toDo => (
-          <ToDo key={toDo} toDoText={toDo} completeToDo={this.completeToDo} />
+          <ToDo
+            key={toDo}
+            toDoText={toDo}
+            completeToDo={this.props.completeToDo}
+          />
         ))}
       </ul>
     );
@@ -119,7 +118,12 @@ class ToDo extends React.Component {
   render() {
     return (
       <li>
-        <input type="checkbox" onClick={this.props.completeToDo} />
+        <input
+          type="checkbox"
+          onClick={e => {
+            this.props.completeToDo(this.props.toDoText);
+          }}
+        />
         <span>{this.props.toDoText}</span>
       </li>
     );
@@ -138,13 +142,16 @@ class AddToDo extends React.Component {
     e.preventDefault();
     const toDo = e.target.elements.toDo.value.trim();
     const error = this.props.addToDo(toDo);
-    e.target.elements.toDo.value = "";
 
     this.setState(() => {
       return {
         error
       };
     });
+
+    if (!error) {
+      e.target.elements.toDo.value = "";
+    }
   }
   render() {
     return (

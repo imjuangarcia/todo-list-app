@@ -19,6 +19,7 @@ var App = function (_React$Component) {
     _this.addToDo = _this.addToDo.bind(_this);
     _this.removeToDos = _this.removeToDos.bind(_this);
     _this.makeDecision = _this.makeDecision.bind(_this);
+    _this.completeToDo = _this.completeToDo.bind(_this);
 
     _this.state = {
       toDos: JSON.parse(localStorage.getItem("toDos")) || []
@@ -27,6 +28,13 @@ var App = function (_React$Component) {
   }
 
   _createClass(App, [{
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps, prevState) {
+      if (prevState.toDos.length !== this.state.toDos.length) {
+        localStorage.setItem("toDos", JSON.stringify(this.state.toDos));
+      }
+    }
+  }, {
     key: "addToDo",
     value: function addToDo(toDo) {
       if (!toDo) {
@@ -36,7 +44,6 @@ var App = function (_React$Component) {
       }
 
       this.setState(function (previousState) {
-        localStorage.setItem("toDos", JSON.stringify(previousState.toDos.concat(toDo)));
         return {
           toDos: previousState.toDos.concat(toDo)
         };
@@ -49,6 +56,17 @@ var App = function (_React$Component) {
         localStorage.removeItem("toDos", "");
         return {
           toDos: []
+        };
+      });
+    }
+  }, {
+    key: "completeToDo",
+    value: function completeToDo(toDoToRemove) {
+      this.setState(function (prevState) {
+        return {
+          toDos: prevState.toDos.filter(function (toDo) {
+            return toDoToRemove !== toDo;
+          })
         };
       });
     }
@@ -66,7 +84,7 @@ var App = function (_React$Component) {
         React.Fragment,
         null,
         React.createElement(Header, { toDos: this.state.toDos }),
-        React.createElement(ToDos, { toDos: this.state.toDos }),
+        React.createElement(ToDos, { toDos: this.state.toDos, completeToDo: this.completeToDo }),
         React.createElement(AddToDo, { addToDo: this.addToDo }),
         React.createElement(Actions, {
           hasToDos: this.state.toDos.length > 0,
@@ -121,42 +139,26 @@ var Actions = function Actions(props) {
 var ToDos = function (_React$Component2) {
   _inherits(ToDos, _React$Component2);
 
-  function ToDos(props) {
+  function ToDos() {
     _classCallCheck(this, ToDos);
 
-    var _this2 = _possibleConstructorReturn(this, (ToDos.__proto__ || Object.getPrototypeOf(ToDos)).call(this, props));
-
-    _this2.completeToDo = _this2.completeToDo.bind(_this2);
-    return _this2;
+    return _possibleConstructorReturn(this, (ToDos.__proto__ || Object.getPrototypeOf(ToDos)).apply(this, arguments));
   }
 
   _createClass(ToDos, [{
-    key: "completeToDo",
-    value: function completeToDo(e) {
-      var _this3 = this;
-
-      for (var i = 0; i < this.props.toDos.length; i++) {
-        if (this.props.toDos[i] === e.target.nextSibling.innerHTML) {
-          this.props.toDos.splice(i, 1);
-          this.setState(function () {
-            localStorage.setItem("toDos", JSON.stringify(_this3.props.toDos));
-            return {
-              toDos: _this3.props.toDos
-            };
-          });
-        }
-      }
-    }
-  }, {
     key: "render",
     value: function render() {
-      var _this4 = this;
+      var _this3 = this;
 
       return React.createElement(
         "ul",
         null,
         this.props.toDos.map(function (toDo) {
-          return React.createElement(ToDo, { key: toDo, toDoText: toDo, completeToDo: _this4.completeToDo });
+          return React.createElement(ToDo, {
+            key: toDo,
+            toDoText: toDo,
+            completeToDo: _this3.props.completeToDo
+          });
         })
       );
     }
@@ -177,10 +179,17 @@ var ToDo = function (_React$Component3) {
   _createClass(ToDo, [{
     key: "render",
     value: function render() {
+      var _this5 = this;
+
       return React.createElement(
         "li",
         null,
-        React.createElement("input", { type: "checkbox", onClick: this.props.completeToDo }),
+        React.createElement("input", {
+          type: "checkbox",
+          onClick: function onClick(e) {
+            _this5.props.completeToDo(_this5.props.toDoText);
+          }
+        }),
         React.createElement(
           "span",
           null,
@@ -214,13 +223,16 @@ var AddToDo = function (_React$Component4) {
       e.preventDefault();
       var toDo = e.target.elements.toDo.value.trim();
       var error = this.props.addToDo(toDo);
-      e.target.elements.toDo.value = "";
 
       this.setState(function () {
         return {
           error: error
         };
       });
+
+      if (!error) {
+        e.target.elements.toDo.value = "";
+      }
     }
   }, {
     key: "render",
