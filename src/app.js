@@ -6,17 +6,9 @@ import Actions from "./components/Actions";
 import Header from "./components/Header";
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.addToDo = this.addToDo.bind(this);
-    this.removeToDos = this.removeToDos.bind(this);
-    this.makeDecision = this.makeDecision.bind(this);
-    this.completeToDo = this.completeToDo.bind(this);
-
-    this.state = {
-      toDos: JSON.parse(localStorage.getItem("toDos")) || []
-    };
-  }
+  state = {
+    toDos: JSON.parse(localStorage.getItem("toDos")) || []
+  };
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.toDos.length !== this.state.toDos.length) {
@@ -24,7 +16,7 @@ class App extends React.Component {
     }
   }
 
-  addToDo(toDo) {
+  addToDo = toDo => {
     if (!toDo) {
       return "Enter a valid ToDo item";
     } else if (this.state.toDos.indexOf(toDo) > -1) {
@@ -36,16 +28,16 @@ class App extends React.Component {
         toDos: previousState.toDos.concat(toDo)
       };
     });
-  }
-  removeToDos() {
+  };
+  removeToDos = () => {
     this.setState(() => {
       localStorage.removeItem("toDos", "");
       return {
         toDos: []
       };
     });
-  }
-  completeToDo(toDoToRemove) {
+  };
+  completeToDo = toDoToRemove => {
     this.setState(prevState => {
       return {
         toDos: prevState.toDos.filter(toDo => {
@@ -53,12 +45,12 @@ class App extends React.Component {
         })
       };
     });
-  }
-  makeDecision() {
+  };
+  makeDecision = () => {
     const randomNumber = Math.floor(Math.random() * this.state.toDos.length);
     const option = this.state.toDos[randomNumber];
     alert(option);
-  }
+  };
   render() {
     return (
       <React.Fragment>
