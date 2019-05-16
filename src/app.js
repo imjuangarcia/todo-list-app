@@ -4,10 +4,12 @@ import AddToDo from "./components/AddToDo";
 import ToDos from "./components/ToDos";
 import Actions from "./components/Actions";
 import Header from "./components/Header";
+import OptionModal from "./components/Modal";
 
 class App extends React.Component {
   state = {
-    toDos: JSON.parse(localStorage.getItem("toDos")) || []
+    toDos: JSON.parse(localStorage.getItem("toDos")) || [],
+    selectedToDo: undefined
   };
 
   componentDidUpdate(prevProps, prevState) {
@@ -37,6 +39,13 @@ class App extends React.Component {
       };
     });
   };
+  clearSelectedToDo = () => {
+    this.setState(() => {
+      return {
+        selectedToDo: undefined
+      };
+    });
+  };
   completeToDo = toDoToRemove => {
     this.setState(prevState => {
       return {
@@ -49,7 +58,11 @@ class App extends React.Component {
   makeDecision = () => {
     const randomNumber = Math.floor(Math.random() * this.state.toDos.length);
     const option = this.state.toDos[randomNumber];
-    alert(option);
+    this.setState(() => {
+      return {
+        selectedToDo: option
+      };
+    });
   };
   render() {
     return (
@@ -61,6 +74,10 @@ class App extends React.Component {
           hasToDos={this.state.toDos.length > 0}
           removeToDos={this.removeToDos}
           makeDecision={this.makeDecision}
+        />
+        <OptionModal
+          selectedToDo={this.state.selectedToDo}
+          clearSelectedToDo={this.clearSelectedToDo}
         />
       </React.Fragment>
     );
