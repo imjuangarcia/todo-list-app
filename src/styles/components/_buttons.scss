@@ -1,0 +1,29 @@
+.buttons {
+  text-align: center;
+  margin-bottom: 4rem;
+
+  button {
+    font-family: "Montserrat", sans-serif;
+    border: none;
+    padding: 1rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    margin: 0 1px;
+    min-width: 185px;
+    color: white;
+    background-color: #898989;
+    cursor: pointer;
+  }
+
+  button:disabled {
+    background-color: $light-grey;
+    color: $dark-grey;
+    cursor: default;
+  }
+
+  .randomPick {
+    background-color: $blue;
+  }
+}

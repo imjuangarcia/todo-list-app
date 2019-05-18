@@ -5,7 +5,11 @@ const Actions = props => (
     <button disabled={!props.hasToDos} onClick={props.removeToDos}>
       Remove ToDos
     </button>
-    <button disabled={!props.hasToDos} onClick={props.makeDecision}>
+    <button
+      disabled={!props.hasToDos}
+      onClick={props.makeDecision}
+      className="randomPick"
+    >
       What should I do?
     </button>
   </section>

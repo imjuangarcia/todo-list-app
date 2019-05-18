@@ -1,5 +1,7 @@
-$brand: blue;
-
-* {
-  color: $brand;
-}
+@import "./base/settings";
+@import "./base/base";
+@import "./components/header";
+@import "./components/container";
+@import "./components/buttons";
+@import "./components/todos";
+@import "./components/addtodo";

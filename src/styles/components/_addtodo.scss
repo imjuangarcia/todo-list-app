@@ -1,0 +1,56 @@
+form {
+  text-align: center;
+  width: 90%;
+  margin: 4rem auto;
+
+  fieldset {
+    border: none;
+    position: relative;
+    padding: 0;
+    margin: 0;
+
+    input {
+      border-radius: 200px;
+      padding: 1rem;
+      box-shadow: 0px 2px 22px rgba(47, 93, 190, 0.12);
+      font-size: 1rem;
+      color: $blue;
+      border: none;
+      font-family: "Montserrat", sans-serif;
+      width: 100%;
+      box-sizing: border-box;
+
+      &::-webkit-input-placeholder {
+        color: $dark-grey;
+      }
+      &::-moz-placeholder {
+        color: $dark-grey;
+      }
+      &:-ms-input-placeholder {
+        color: $dark-grey;
+      }
+      &:-moz-placeholder {
+        color: $dark-grey;
+      }
+    }
+
+    button {
+      position: absolute;
+      right: 0;
+      top: 0;
+      background-color: $blue;
+      border-top-right-radius: 200px;
+      border-bottom-right-radius: 200px;
+      color: white;
+      height: 100%;
+      width: 50px;
+    }
+  }
+
+  p {
+    text-align: left;
+    margin: 1rem 0;
+    font-size: 1rem;
+    color: #de2953;
+  }
+}

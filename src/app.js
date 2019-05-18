@@ -5,6 +5,7 @@ import ToDos from "./components/ToDos";
 import Actions from "./components/Actions";
 import Header from "./components/Header";
 import OptionModal from "./components/Modal";
+import "normalize.css/normalize.css";
 import "./styles/style.scss";
 
 class App extends React.Component {

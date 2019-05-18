@@ -1,0 +1,28 @@
+ul {
+  padding: 2rem;
+  margin: 0;
+  list-style: none;
+
+  li {
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+
+    input {
+      appearance: none;
+      -webkit-appearance: none;
+      border: 1px solid #ebebeb;
+      box-shadow: 2px 2px 16px rgba(47, 93, 190, 0.15);
+      border-radius: 0.25rem;
+      width: 2rem;
+      height: 2rem;
+    }
+
+    span {
+      margin-left: 1rem;
+      font-weight: 500;
+      font-size: 1rem;
+      color: $dark-grey;
+    }
+  }
+}

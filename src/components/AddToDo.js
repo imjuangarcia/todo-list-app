@@ -22,10 +22,14 @@ export default class AddToDo extends React.Component {
   render() {
     return (
       <React.Fragment>
-        {this.state.error && <p>{this.state.error}</p>}
         <form onSubmit={this.addToDo}>
-          <input type="text" name="toDo" />
-          <button>Add ToDo</button>
+          <fieldset>
+            <input type="text" name="toDo" placeholder="E.G. Walk the dog" />
+            <button>
+              <i className="fal fa-long-arrow-right" />
+            </button>
+          </fieldset>
+          {this.state.error && <p>{this.state.error}</p>}
         </form>
       </React.Fragment>
     );
