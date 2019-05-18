@@ -54,3 +54,17 @@ form {
     color: #de2953;
   }
 }
+
+// Ipad portrait
+@media screen and (max-height: 769px) {
+  form {
+    margin: 2rem auto;
+  }
+}
+
+// Mobile
+@media screen and (max-width: 600px) {
+  form {
+    margin: 4rem auto 2rem auto;
+  }
+}

@@ -1,6 +1,8 @@
 .buttons {
   text-align: center;
   margin-bottom: 4rem;
+  display: flex;
+  justify-content: center;
 
   button {
     font-family: "Montserrat", sans-serif;
@@ -25,5 +27,24 @@
 
   .randomPick {
     background-color: $blue;
+  }
+}
+
+// Ipad portrait
+@media screen and (max-height: 769px) {
+  .buttons {
+    margin-bottom: 2rem;
+  }
+}
+
+// Mobile
+@media screen and (max-width: 600px) {
+  .buttons {
+    button {
+      width: 50%;
+      margin: 0;
+      min-width: auto;
+      min-height: 68px;
+    }
   }
 }

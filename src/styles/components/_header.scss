@@ -31,3 +31,29 @@
     color: $blue;
   }
 }
+
+// Ipad portrait
+@media screen and (max-height: 769px) {
+  .illustration > *,
+  .title {
+    margin-top: 2rem;
+  }
+}
+
+// Mobile
+@media screen and (max-width: 600px) {
+  .illustration > * {
+    margin: auto;
+    width: 90%;
+    margin-top: 2rem;
+  }
+
+  .title {
+    margin: 2rem auto;
+    width: 90%;
+
+    .my-tasks {
+      text-align: left;
+    }
+  }
+}

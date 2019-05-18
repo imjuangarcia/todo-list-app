@@ -14,7 +14,7 @@ const Header = props => (
       />
     </picture>
     <section className="title">
-      <h2 className={props.toDos.length === 0 ? "empty" : ""}>
+      <h2 className={props.toDos.length === 0 ? "empty" : "my-tasks"}>
         {props.toDos.length > 0 ? "My Tasks:" : "No Tasks for today."}
       </h2>
       <h3 className={props.toDos.length === 0 ? "" : "hidden"}>
