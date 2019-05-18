@@ -4,6 +4,7 @@ import AddToDo from "./components/AddToDo";
 import ToDos from "./components/ToDos";
 import Actions from "./components/Actions";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import OptionModal from "./components/Modal";
 import "normalize.css/normalize.css";
 import "./styles/style.scss";
@@ -77,6 +78,7 @@ class App extends React.Component {
           removeToDos={this.removeToDos}
           makeDecision={this.makeDecision}
         />
+        <Footer />
         <OptionModal
           selectedToDo={this.state.selectedToDo}
           clearSelectedToDo={this.clearSelectedToDo}

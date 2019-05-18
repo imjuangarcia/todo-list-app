@@ -1,0 +1,14 @@
+footer {
+  margin-bottom: 2rem;
+  text-align: center;
+
+  p {
+    font-size: 0.75rem;
+    color: $dark-grey;
+
+    a {
+      color: $blue;
+      text-decoration: none;
+    }
+  }
+}
