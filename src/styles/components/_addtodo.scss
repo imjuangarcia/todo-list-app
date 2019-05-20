@@ -55,6 +55,25 @@ form {
   }
 }
 
+// Error Animation
+.error-enter {
+  opacity: 0;
+  transition: 0.3s;
+
+  &.error-enter-active {
+    opacity: 1;
+  }
+}
+
+.error-exit {
+  opacity: 1;
+  transition: 0.3s;
+
+  &.error-exit-active {
+    opacity: 0;
+  }
+}
+
 // Ipad portrait
 @media screen and (max-height: 769px) {
   form {

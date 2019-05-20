@@ -1,4 +1,5 @@
 import React from "react";
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 
 export default class AddToDo extends React.Component {
   state = {
@@ -22,15 +23,22 @@ export default class AddToDo extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <form onSubmit={this.addToDo}>
+        <TransitionGroup component="form" onSubmit={this.addToDo}>
           <fieldset>
             <input type="text" name="toDo" placeholder="E.G. Walk the dog" />
             <button>
               <i className="fal fa-long-arrow-right" />
             </button>
           </fieldset>
-          {this.state.error && <p>{this.state.error}</p>}
-        </form>
+          {this.state.error && (
+            <CSSTransition
+              classNames="error"
+              timeout={{ enter: 300, exit: 300 }}
+            >
+              <p>{this.state.error}</p>
+            </CSSTransition>
+          )}
+        </TransitionGroup>
       </React.Fragment>
     );
   }
