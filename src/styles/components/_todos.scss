@@ -8,6 +8,7 @@ ul {
     margin-bottom: 2rem;
     display: flex;
     align-items: center;
+    word-break: break-all;
 
     input {
       appearance: none;
@@ -15,7 +16,7 @@ ul {
       border: 1px solid #ebebeb;
       box-shadow: 2px 2px 16px rgba(47, 93, 190, 0.15);
       border-radius: 0.25rem;
-      width: 2rem;
+      min-width: 2rem;
       height: 2rem;
     }
 
