@@ -24,8 +24,4 @@ const Header = props => (
   </React.Fragment>
 );
 
-Header.defaultProps = {
-  title: "To-Do App"
-};
-
 export default Header;
