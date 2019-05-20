@@ -30,7 +30,7 @@
     cursor: default;
   }
 
-  .randomPick {
+  .randomPick:not(:disabled) {
     background-color: $blue;
 
     &:hover {

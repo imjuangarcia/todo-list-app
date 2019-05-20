@@ -28,3 +28,22 @@ ul {
     }
   }
 }
+
+// Animations
+.todo-enter {
+  opacity: 0;
+  transition: 0.3s;
+
+  &.todo-enter-active {
+    opacity: 1;
+  }
+}
+
+.todo-exit {
+  opacity: 1;
+  transition: 0.3s;
+
+  &.todo-exit-active {
+    opacity: 0;
+  }
+}
