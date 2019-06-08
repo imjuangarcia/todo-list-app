@@ -23,22 +23,24 @@ export default class AddToDo extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <TransitionGroup component="form" onSubmit={this.addToDo}>
+        <form onSubmit={this.addToDo}>
           <fieldset>
             <input type="text" name="toDo" placeholder="E.G. Walk the dog" />
             <button>
               <i className="fal fa-long-arrow-right" />
             </button>
           </fieldset>
-          {this.state.error && (
-            <CSSTransition
-              classNames="error"
-              timeout={{ enter: 300, exit: 300 }}
-            >
-              <p>{this.state.error}</p>
-            </CSSTransition>
-          )}
-        </TransitionGroup>
+          <TransitionGroup component="section">
+            {this.state.error && (
+              <CSSTransition
+                classNames="error"
+                timeout={{ enter: 300, exit: 300 }}
+              >
+                <p>{this.state.error}</p>
+              </CSSTransition>
+            )}
+          </TransitionGroup>
+        </form>
       </React.Fragment>
     );
   }
